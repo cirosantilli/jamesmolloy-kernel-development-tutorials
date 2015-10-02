@@ -19,11 +19,22 @@ Improvements from upstream:
 Usage:
 
     sudo apt-get install bochs bochs-sdl build-essential qemu nasm xorriso
+
+    # Build and run given directory with QEMU.
     make qemu DIR=3_screen
     make qemu DIR=4_gdt
+
+    # With Bochs.
     make bochs DIR=3_screen
+
+    # Clean given directory
     make clean DIR=3_gdt
     make clean DIR=4_gdt
+
+    # An environment variable can also be used.
+    export DIR=3_screen
+    make qemu
+    make clean
 
 Tested on Ubuntu 14.04 AMD64.
 
