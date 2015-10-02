@@ -6,6 +6,8 @@
 #include "timer.h"
 #include "paging.h"
 
+struct multiboot;
+
 int main(struct multiboot *mboot_ptr)
 {
     // Initialise all the ISRs and segmentation

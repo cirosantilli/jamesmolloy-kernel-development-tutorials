@@ -4,6 +4,8 @@
 #include "monitor.h"
 #include "descriptor_tables.h"
 
+struct multiboot;
+
 int main(struct multiboot *mboot_ptr)
 {
     // Initialise all the ISRs and segmentation

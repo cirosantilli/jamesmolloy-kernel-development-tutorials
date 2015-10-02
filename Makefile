@@ -20,7 +20,7 @@ $(ELF): $(OBJS)
 	ld -o '$(ELF)' -melf_i386 -Tlink.ld $(OBJS)
 
 %$(OBJ_EXT): %$(C_EXT)
-	gcc -c -Wextra -fno-builtin -fno-stack-protector -m32 -nostdlib -nostdinc -o '$@' '$<'
+	gcc -c -Wextra -fno-builtin -fno-stack-protector -m32 -nostdlib -nostdinc -o -std=gn99 '$@' '$<'
 
 %$(OBJ_EXT): %$(ASM_EXT)
 	nasm -felf -o '$@' '$<'

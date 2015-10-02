@@ -9,6 +9,8 @@
 #include "fs.h"
 #include "initrd.h"
 
+struct multiboot;
+
 extern u32int placement_address;
 
 int main(struct multiboot *mboot_ptr)

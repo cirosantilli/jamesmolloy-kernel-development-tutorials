@@ -9,7 +9,8 @@
 #include "fs.h"
 #include "initrd.h"
 #include "task.h"
-#include "syscall.h"
+
+struct multiboot;
 
 extern u32int placement_address;
 u32int initial_esp;
@@ -21,7 +22,6 @@ int main(struct multiboot *mboot_ptr, u32int initial_stack)
     init_descriptor_tables();
     // Initialise the screen (by clearing it)
     monitor_clear();
-
     // Initialise the PIT to 100Hz
     asm volatile("sti");
     init_timer(50);
@@ -42,11 +42,46 @@ int main(struct multiboot *mboot_ptr, u32int initial_stack)
     // Initialise the initial ramdisk, and set it as the filesystem root.
     fs_root = initialise_initrd(initrd_location);
 
-    initialise_syscalls();
+    // Create a new process in a new address space which is a clone of this.
+    int ret = fork();
 
-    switch_to_user_mode();
+    monitor_write("fork() returned ");
+    monitor_write_hex(ret);
+    monitor_write(", and getpid() returned ");
+    monitor_write_hex(getpid());
+    monitor_write("\n============================================================================\n");
 
-    syscall_monitor_write("Hello, user world!\n");
+    // The next section of code is not reentrant so make sure we aren't interrupted during.
+    asm volatile("cli");
+    // list the contents of /
+    int i = 0;
+    struct dirent *node = 0;
+    while ( (node = readdir_fs(fs_root, i)) != 0)
+    {
+        monitor_write("Found file ");
+        monitor_write(node->name);
+        fs_node_t *fsnode = finddir_fs(fs_root, node->name);
+
+        if ((fsnode->flags&0x7) == FS_DIRECTORY)
+        {
+            monitor_write("\n\t(directory)\n");
+        }
+        else
+        {
+            monitor_write("\n\t contents: \"");
+            char buf[256];
+            u32int sz = read_fs(fsnode, 0, 256, buf);
+            int j;
+            for (j = 0; j < sz; j++)
+                monitor_put(buf[j]);
+            
+            monitor_write("\"\n");
+        }
+        i++;
+    }
+    monitor_write("\n");
+
+    asm volatile("sti");
 
     return 0;
 }

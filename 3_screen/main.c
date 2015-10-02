@@ -3,6 +3,8 @@
 
 #include "monitor.h"
 
+struct multiboot;
+
 int main(struct multiboot *mboot_ptr)
 {
     // Initialise the screen (by clearing it)
