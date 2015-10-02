@@ -5,8 +5,9 @@
 #include "descriptor_tables.h"
 #include "timer.h"
 
-int main(struct multiboot *mboot_ptr)
-{
+struct multiboot;
+
+int main(struct multiboot *mboot_ptr) {
     // Initialise all the ISRs and segmentation
     init_descriptor_tables();
     // Initialise the screen (by clearing it)
