@@ -1,14 +1,16 @@
 .POSIX:
 
 ASM_EXT ?= .asm
-C_EXT ?= .c
-ELF_EXT ?= .elf
-ELF ?= main$(ELF_EXT)
-IMG ?= main.img
-OBJ_EXT ?= .o
 BOOT_PATH ?= iso/boot
+C_EXT ?= .c
+OBJ_EXT ?= .o
 
-OBJS := $(foreach IN_EXT, $(C_EXT) $(ASM_EXT),$(patsubst %$(IN_EXT), %$(OBJ_EXT), $(wildcard *$(IN_EXT))))
+DIR ?= 3_screen
+ELF_EXT ?= .elf
+ELF ?= $(DIR)/main$(ELF_EXT)
+IMG ?= $(DIR)/main.img
+
+OBJS := $(foreach IN_EXT, $(C_EXT) $(ASM_EXT),$(patsubst %$(IN_EXT), %$(OBJ_EXT), $(wildcard $(DIR)/*$(IN_EXT)))) boot.o
 
 .PHONY: bochs clean qemu
 
@@ -17,13 +19,18 @@ $(IMG): $(ELF)
 	grub-mkrescue -o '$@' iso
 
 $(ELF): $(OBJS)
-	ld -o '$(ELF)' -melf_i386 -Tlink.ld $(OBJS)
+	ld -o '$(ELF)' -melf_i386 -Tlink.ld $^
 
-%$(OBJ_EXT): %$(C_EXT)
-	gcc -c -Wextra -fno-builtin -fno-stack-protector -m32 -nostdlib -nostdinc -o -std=gn99 '$@' '$<'
+$(DIR)/%$(OBJ_EXT): $(DIR)/%$(C_EXT)
+	echo $(OBJS)
+	gcc -c -Wextra -fno-builtin -fno-stack-protector -m32 -nostdlib -nostdinc -std=gnu99 -o '$@' '$<'
 
-%$(OBJ_EXT): %$(ASM_EXT)
-	nasm -felf -o '$@' '$<'
+NASM_RULE := nasm -felf -o
+$(DIR)/%$(OBJ_EXT): $(DIR)/%$(ASM_EXT)
+	$(NASM_RULE) '$@' '$<'
+
+boot.o: boot.asm
+	$(NASM_RULE) '$@' '$<'
 
 bochs: $(IMG)
 	CYLINDERS="$$(($$(stat -c '%s' '$<') / 512))" && \
@@ -34,7 +41,7 @@ bochs: $(IMG)
 		'megs: 128'
 
 clean:
-	rm -f *$(OBJ_EXT) '$(BOOT_PATH)'/*$(ELF_EXT) *$(ELF_EXT) '$(IMG)'
+	rm -f $(OBJS) '$(BOOT_PATH)'/*$(ELF_EXT) '$(ELF)' '$(IMG)'
 
 qemu: $(IMG)
 	qemu-system-i386 '$<'

@@ -1,16 +1,14 @@
-/* Link.ld -- Linker script for the kernel - ensure everything goes in the */
-/*            Correct place.  */
-/*            Original file taken from Bran's Kernel Development */
-/*            tutorials: http://www.osdever.net/bkerndev/index.php. */
-
 ENTRY(start)
 SECTIONS
 {
 
-    .text 0x100000 :
+    .mbheader 0x100000 :
+    {
+        *(.mbheader)
+    }
+    .text :
     {
         code = .; _code = .; __code = .;
-        boot.o(.text)
         *(.text)
         . = ALIGN(4096);
     }
