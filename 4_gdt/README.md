@@ -1,4 +1,5 @@
 Expected output:
 
     Hello world!
-    unhandled interrupt: 0x3
+    received interrupt: 3
+    received interrupt: 4
