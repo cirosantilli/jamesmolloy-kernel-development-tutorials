@@ -23,7 +23,7 @@ $(ELF): $(OBJS)
 
 $(DIR)/%$(OBJ_EXT): $(DIR)/%$(C_EXT)
 	echo $(OBJS)
-	gcc -c -Wextra -fno-builtin -fno-stack-protector -m32 -nostdlib -nostdinc -std=gnu99 -o '$@' '$<'
+	gcc -c -ggdb3 -Wextra -fno-builtin -fno-stack-protector -m32 -nostdlib -nostdinc -std=gnu99 -o '$@' '$<'
 
 NASM_RULE := nasm -felf -o
 $(DIR)/%$(OBJ_EXT): $(DIR)/%$(ASM_EXT)
@@ -45,3 +45,7 @@ clean:
 
 qemu: $(IMG)
 	qemu-system-i386 '$<'
+
+debug: $(IMG)
+	qemu-system-i386 -hda '$<' -S -s &
+	gdb $(ELF) -x gdb.gdb
