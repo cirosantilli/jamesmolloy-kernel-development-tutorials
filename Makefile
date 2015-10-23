@@ -5,7 +5,27 @@ BOOT_PATH ?= iso/boot
 C_EXT ?= .c
 OBJ_EXT ?= .o
 
-DIR ?= 3_screen
+DIR ?=
+
+# If DIR is empty, take actions on every directory.
+ifeq ($(strip $(DIR)),)
+
+DIRS := $(filter-out iso/, $(wildcard */))
+
+.PHONY: all clean
+
+all:
+	for d in $(DIRS); do \
+		$(MAKE) DIR="$$d" ;\
+	done
+
+clean:
+	for d in $(DIRS); do \
+		$(MAKE) '$@' DIR="$$d" ;\
+	done
+
+else
+
 ELF_EXT ?= .elf
 ELF ?= $(DIR)/main$(ELF_EXT)
 IMG ?= $(DIR)/main.img
@@ -50,3 +70,5 @@ debug: $(IMG)
 
 qemu: $(IMG)
 	qemu-system-i386 '$<'
+
+endif

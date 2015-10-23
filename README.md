@@ -32,9 +32,17 @@ Usage:
     # Clean current directory.
     make clean
 
+    # From toplevel.
+    cd ../
+
+    # Clean all.
+    make clean
+
+    # Make all.
+    make
+
 Tested on Ubuntu 14.04 AMD64.
 
 TODO:
 
 - tutorials 8 - 10 are not working, because we could not make 8 work on GRUB2. See [8_vfs](8_vfs/README.md).
-- make `make` build all, `make clean` clean all
