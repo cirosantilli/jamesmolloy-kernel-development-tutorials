@@ -5,6 +5,9 @@
 //                       Rewritten for JamesM's kernel development tutorials.
 //
 
+#ifndef DESCRIPTOR_TABLES_H
+#define DESCRIPTOR_TABLES_H
+
 #include "common.h"
 
 // Initialisation function is publicly accessible.
@@ -108,4 +111,4 @@ extern void irq13();
 extern void irq14();
 extern void irq15();
 
-
+#endif
