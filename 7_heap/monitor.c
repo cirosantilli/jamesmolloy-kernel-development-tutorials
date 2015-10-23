@@ -58,7 +58,7 @@ void monitor_put(char c)
     u8int backColour = 0;
     u8int foreColour = 15;
 
-    // The attribute byte is made up of two nibbles - the lower being the 
+    // The attribute byte is made up of two nibbles - the lower being the
     // foreground colour, and the upper the background colour.
     u8int  attributeByte = (backColour << 4) | (foreColour & 0x0F);
     // The attribute byte is the top 8 bits of the word we have to send to the
@@ -159,7 +159,7 @@ void monitor_write_hex(u32int n)
         {
             continue;
         }
-    
+
         if (tmp >= 0xA)
         {
             noZeroes = 0;
@@ -171,7 +171,7 @@ void monitor_write_hex(u32int n)
             monitor_put( tmp+'0' );
         }
     }
-  
+
     tmp = n & 0xF;
     if (tmp >= 0xA)
     {
