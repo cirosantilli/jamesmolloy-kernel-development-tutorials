@@ -20,20 +20,16 @@ Usage:
 
     sudo apt-get install bochs bochs-sdl build-essential qemu nasm xorriso
 
-    # Build and run given directory with QEMU.
-    make qemu DIR=3_screen
-    make qemu DIR=4_gdt
+    # Build and run current directory with QEMU.
+    cd 3_screen
+    make qemu
+    cd ../4_gdt
+    make qemu
 
     # With Bochs.
-    make bochs DIR=3_screen
+    make bochs
 
-    # Clean given directory
-    make clean DIR=3_gdt
-    make clean DIR=4_gdt
-
-    # An environment variable can also be used.
-    export DIR=3_screen
-    make qemu
+    # Clean current directory.
     make clean
 
 Tested on Ubuntu 14.04 AMD64.

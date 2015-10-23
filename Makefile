@@ -12,7 +12,9 @@ IMG ?= $(DIR)/main.img
 
 OBJS := $(foreach IN_EXT, $(C_EXT) $(ASM_EXT),$(patsubst %$(IN_EXT), %$(OBJ_EXT), $(wildcard $(DIR)/*$(IN_EXT)))) boot.o
 
-.PHONY: bochs clean qemu
+.PHONY: all bochs clean debug qemu
+
+all: $(IMG)
 
 $(IMG): $(ELF)
 	cp '$<' '$(BOOT_PATH)'
@@ -22,7 +24,6 @@ $(ELF): $(OBJS)
 	ld -o '$(ELF)' -melf_i386 -Tlink.ld $^
 
 $(DIR)/%$(OBJ_EXT): $(DIR)/%$(C_EXT)
-	echo $(OBJS)
 	gcc -c -ggdb3 -Wextra -fno-builtin -fno-stack-protector -m32 -nostdlib -nostdinc -std=gnu99 -o '$@' '$<'
 
 NASM_RULE := nasm -felf -o
@@ -43,9 +44,9 @@ bochs: $(IMG)
 clean:
 	rm -f $(OBJS) '$(BOOT_PATH)'/*$(ELF_EXT) '$(ELF)' '$(IMG)'
 
-qemu: $(IMG)
-	qemu-system-i386 '$<'
-
 debug: $(IMG)
 	qemu-system-i386 -hda '$<' -S -s &
 	gdb $(ELF) -x gdb.gdb
+
+qemu: $(IMG)
+	qemu-system-i386 '$<'
