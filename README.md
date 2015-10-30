@@ -1,8 +1,8 @@
 # jamesmolloy kernel development tutorials
 
-Source code from <http://www.jamesmolloy.co.uk/tutorial_html/index.html> with improved build system.
+Source code from <http://www.jamesmolloy.co.uk/tutorial_html/index.html> with improved build system and some simplifications.
 
-Behaviour is exactly the same as the tutorial so you can still follow along. This only cleans and DRYes up the build.
+Behaviour is very close to the tutorial so you can still follow along. This mostly cleans and DRYes up the build.
 
 Improvements from upstream:
 
@@ -46,3 +46,11 @@ Tested on Ubuntu 14.04 AMD64.
 TODO:
 
 - tutorials 8 - 10 are not working, because we could not make 8 work on GRUB2. See [8_vfs](8_vfs/README.md).
+
+## About
+
+This is an OS development tutorial that creates progressively complex OSes based on the code of the previous one.
+
+It uses GRUB and C.
+
+Since Molloy did not use source control + bug tracker, a list of known bugs grew at: <http://wiki.osdev.org/James_Molloy's_Tutorial_Known_Bugs>

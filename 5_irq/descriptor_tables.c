@@ -1,5 +1,5 @@
 //
-// descriptor_tables.c - Initialises the GDT and IDT, and defines the 
+// descriptor_tables.c - Initialises the GDT and IDT, and defines the
 //                       default ISR and IRQ handler.
 //                       Based on code from Bran's kernel development tutorials.
 //                       Rewritten for JamesM's kernel development tutorials.
@@ -24,9 +24,6 @@ gdt_ptr_t   gdt_ptr;
 idt_entry_t idt_entries[256];
 idt_ptr_t   idt_ptr;
 
-// Extern the ISR handler array so we can nullify them on startup.
-extern isr_t interrupt_handlers[];
-
 // Initialisation routine - zeroes all the interrupt service routines,
 // initialises the GDT and IDT.
 void init_descriptor_tables()
@@ -36,8 +33,6 @@ void init_descriptor_tables()
     init_gdt();
     // Initialise the interrupt descriptor table.
     init_idt();
-    // Nullify all the interrupt handlers.
-    memset(&interrupt_handlers, 0, sizeof(isr_t)*256);
 }
 
 static void init_gdt()
@@ -63,7 +58,7 @@ static void gdt_set_gate(s32int num, u32int base, u32int limit, u8int access, u8
 
     gdt_entries[num].limit_low   = (limit & 0xFFFF);
     gdt_entries[num].granularity = (limit >> 16) & 0x0F;
-    
+
     gdt_entries[num].granularity |= gran & 0xF0;
     gdt_entries[num].access      = access;
 }
@@ -119,22 +114,23 @@ static void init_idt()
     idt_set_gate(29, (u32int)isr29, 0x08, 0x8E);
     idt_set_gate(30, (u32int)isr30, 0x08, 0x8E);
     idt_set_gate(31, (u32int)isr31, 0x08, 0x8E);
-    idt_set_gate(32, (u32int)irq0, 0x08, 0x8E);
-    idt_set_gate(33, (u32int)irq1, 0x08, 0x8E);
-    idt_set_gate(34, (u32int)irq2, 0x08, 0x8E);
-    idt_set_gate(35, (u32int)irq3, 0x08, 0x8E);
-    idt_set_gate(36, (u32int)irq4, 0x08, 0x8E);
-    idt_set_gate(37, (u32int)irq5, 0x08, 0x8E);
-    idt_set_gate(38, (u32int)irq6, 0x08, 0x8E);
-    idt_set_gate(39, (u32int)irq7, 0x08, 0x8E);
-    idt_set_gate(40, (u32int)irq8, 0x08, 0x8E);
-    idt_set_gate(41, (u32int)irq9, 0x08, 0x8E);
-    idt_set_gate(42, (u32int)irq10, 0x08, 0x8E);
-    idt_set_gate(43, (u32int)irq11, 0x08, 0x8E);
-    idt_set_gate(44, (u32int)irq12, 0x08, 0x8E);
-    idt_set_gate(45, (u32int)irq13, 0x08, 0x8E);
-    idt_set_gate(46, (u32int)irq14, 0x08, 0x8E);
-    idt_set_gate(47, (u32int)irq15, 0x08, 0x8E);
+    idt_set_gate(32, (u32int)isr32, 0x08, 0x8E);
+    idt_set_gate(33, (u32int)isr33, 0x08, 0x8E);
+    idt_set_gate(34, (u32int)isr34, 0x08, 0x8E);
+    idt_set_gate(35, (u32int)isr35, 0x08, 0x8E);
+    idt_set_gate(36, (u32int)isr36, 0x08, 0x8E);
+    idt_set_gate(37, (u32int)isr37, 0x08, 0x8E);
+    idt_set_gate(38, (u32int)isr38, 0x08, 0x8E);
+    idt_set_gate(39, (u32int)isr39, 0x08, 0x8E);
+    idt_set_gate(40, (u32int)isr40, 0x08, 0x8E);
+    idt_set_gate(41, (u32int)isr41, 0x08, 0x8E);
+    idt_set_gate(42, (u32int)isr42, 0x08, 0x8E);
+    idt_set_gate(43, (u32int)isr43, 0x08, 0x8E);
+    idt_set_gate(44, (u32int)isr44, 0x08, 0x8E);
+    idt_set_gate(45, (u32int)isr45, 0x08, 0x8E);
+    idt_set_gate(46, (u32int)isr46, 0x08, 0x8E);
+    idt_set_gate(47, (u32int)isr47, 0x08, 0x8E);
+    idt_set_gate(48, (u32int)isr48, 0x08, 0x8E);
 
     idt_flush((u32int)&idt_ptr);
 }
