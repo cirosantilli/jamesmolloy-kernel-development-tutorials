@@ -10,16 +10,9 @@ void isr_handler(registers_t regs) {
     monitor_write(" ");
     monitor_write_dec(tick++);
     monitor_put('\n');
-
-    /* PIC interrupt. */
-    if (regs.int_no >= 31) {
-        /*
-        Reset slave if from slave.
-        40 because that is the first slave: there are 8 master starting at 32.
-        */
-        if (regs.int_no >= 40)
-            outb(0xA0, 0x20);
-        /* Reset master. */
-        outb(0x20, 0x20);
+    if (regs.int_no >= IRQ_MASTER_0) {
+        if (regs.int_no >= IRQ_SLAVE_0)
+            outb(PIC_SLAVE_CMD, PIC_CMD_RESET);
+        outb(PIC_MASTER_CMD, PIC_CMD_RESET);
     }
 }

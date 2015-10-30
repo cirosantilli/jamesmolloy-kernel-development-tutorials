@@ -70,17 +70,17 @@ static void init_idt()
 
     memset(&idt_entries, 0, sizeof(idt_entry_t)*256);
 
-    // Remap the irq table.
-    outb(0x20, 0x11);
-    outb(0xA0, 0x11);
-    outb(0x21, 0x20);
-    outb(0xA1, 0x28);
-    outb(0x21, 0x04);
-    outb(0xA1, 0x02);
-    outb(0x21, 0x01);
-    outb(0xA1, 0x01);
-    outb(0x21, 0x0);
-    outb(0xA1, 0x0);
+    /* Remap the irq table. */
+    outb(PIC_MASTER_CMD, 0x11);
+    outb(PIC_SLAVE_CMD,  0x11);
+    outb(PIC_MASTER_DATA, 0x20);
+    outb(PIC_SLAVE_DATA,  0x28);
+    outb(PIC_MASTER_DATA, 0x04);
+    outb(PIC_SLAVE_DATA,  0x02);
+    outb(PIC_MASTER_DATA, 0x01);
+    outb(PIC_SLAVE_DATA,  0x01);
+    outb(PIC_MASTER_DATA, 0x00);
+    outb(PIC_SLAVE_DATA,  0x00);
 
     idt_set_gate( 0, (u32int)isr0 , 0x08, 0x8E);
     idt_set_gate( 1, (u32int)isr1 , 0x08, 0x8E);

@@ -1,6 +1,14 @@
 #ifndef COMMON_H
 #define COMMON_H
 
+#define IRQ_MASTER_0 31
+#define IRQ_SLAVE_0 40
+#define PIC_MASTER_CMD 0x20
+#define PIC_MASTER_DATA 0x21
+#define PIC_SLAVE_CMD 0xA0
+#define PIC_SLAVE_DATA 0xA1
+#define PIC_CMD_RESET 0x20
+
 typedef unsigned int   u32int;
 typedef          int   s32int;
 typedef unsigned short u16int;

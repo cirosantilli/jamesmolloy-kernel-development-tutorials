@@ -53,4 +53,4 @@ This is an OS development tutorial that creates progressively complex OSes based
 
 It uses GRUB and C.
 
-Since Molloy did not use source control + bug tracker, a list of known bugs grew at: <http://wiki.osdev.org/James_Molloy's_Tutorial_Known_Bugs>
+Since Molloy did not use source control + bug tracker, a list of known bugs grew at: http://wiki.osdev.org/James_Molloy's_Tutorial_Known_Bugs
